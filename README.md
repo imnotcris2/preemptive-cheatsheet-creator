@@ -1,2 +1,2 @@
-# preemtive-cheatsheet-creator.github.io
+# preemtive-cheatsheet-creator
 Create a fully customizable preemtive cheatsheet to learn your spikes.
