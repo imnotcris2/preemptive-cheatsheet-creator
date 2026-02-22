@@ -10,53 +10,74 @@ body {
     padding: 20px;
 }
 
-/* Main wrapper: side-by-side layout */
+/* Layout wrapper */
 .app-wrapper {
     display: flex;
-    gap: 30px;
-    justify-content: flex-start;
+    gap: 24px;
+    padding: 20px;
     align-items: flex-start;
-    text-align: left;
-    background: #2a2a2a;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    flex-wrap: wrap;
+    /* allows stacking on smaller screens */
 }
 
-/* Controls column */
+/* Left controls */
 .controls {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-width: 280px;
+    flex: 1 1 400px;
+    /* grow, shrink, min width */
+    max-width: 600px;
 }
 
-/* Wrap canvas and buttons together */
+/* Right canvas */
 .canvas-wrapper {
+    flex: 1 1 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
 }
 
-/* Buttons container */
+/* Make canvas scale responsively */
+#mainCanvas {
+    width: 100%;
+    height: auto;
+    max-width: 840px;
+    /* keeps original proportions */
+    border-radius: 8px;
+}
+
+/* Buttons under canvas */
 .canvas-buttons {
     display: flex;
     gap: 12px;
+    margin-top: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-/* 2x2 Pie input grid */
+/* Pie rows responsive */
 .pie-row {
     display: flex;
     gap: 20px;
-    margin-bottom: 12px;
+    flex-wrap: wrap;
 }
 
 .pie-wrapper {
+    flex: 1 1 250px;
+}
+
+/* Control rows wrap nicely */
+.control-row {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 130px;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.section-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(138, 138, 138, 0.479), transparent);
+    margin: 22px 0;
+    width: 100%;
 }
 
 .pie-inputs {
@@ -70,24 +91,25 @@ body {
     font-size: 0.9rem;
 }
 
-/* Flex rows for other controls */
-.control-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
+/* Make number + color inputs compact */
+.controls input[type="number"],
+.controls input[type="color"] {
+    width: 80px;
+    padding: 4px 6px;
 }
 
-/* Inputs: compact height and width */
-input[type="number"],
-input[type="color"] {
-    height: 24px;
-    line-height: 1.2;
-    padding: 2px 4px;
-    font-size: 0.9rem;
-    box-sizing: border-box;
-    width: 60px;
+/* Optional: make color pickers even tighter */
+.controls input[type="color"] {
+    width: 50px;
+    padding: 2px;
+}
+
+/* Prevent labels from stretching full width */
+.controls label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: auto;
 }
 
 /* Buttons: compact and consistent */
@@ -107,4 +129,20 @@ canvas {
 @font-face {
     font-family: 'Minecraft';
     src: url('fonts/Minecraftia-Regular.ttf') format('truetype');
+}
+
+@media (max-width: 1000px) {
+    .app-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .controls {
+        width: 100%;
+        max-width: 700px;
+    }
+
+    .canvas-wrapper {
+        width: 100%;
+    }
 }
