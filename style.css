@@ -13,116 +13,202 @@ body {
 /* Layout wrapper */
 .app-wrapper {
     display: flex;
-    gap: 24px;
+    gap: 20px;
     padding: 20px;
     align-items: flex-start;
     justify-content: center;
     flex-wrap: wrap;
-    /* allows stacking on smaller screens */
 }
 
 /* Left controls */
 .controls {
     flex: 1 1 400px;
-    /* grow, shrink, min width */
     max-width: 600px;
 }
 
-/* Right canvas */
+/* Canvas section heading spacing */
+.canvas-wrapper h3 {
+    margin-bottom: 16px;
+}
+
 .canvas-wrapper {
-    flex: 1 1 500px;
+    flex: 1 1 700px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 700px;
+    max-width: 90vw;
 }
 
-/* Make canvas scale responsively */
+/* Main canvas slightly smaller for display */
 #mainCanvas {
-    width: 100%;
+    width: 80%;
+    /* scale down to 80% of wrapper */
     height: auto;
-    max-width: 840px;
-    /* keeps original proportions */
+    max-width: 600px;
+    /* keeps it smaller */
     border-radius: 8px;
 }
 
 /* Buttons under canvas */
 .canvas-buttons {
     display: flex;
-    gap: 12px;
-    margin-top: 12px;
+    gap: 10px;
+    margin-top: 10px;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-/* Pie rows responsive */
+/* Make pie rows flex horizontally with two items each */
 .pie-row {
     display: flex;
+    justify-content: space-between;
     gap: 20px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    margin-bottom: 20px;
 }
 
 .pie-wrapper {
-    flex: 1 1 250px;
+    flex: 1 1 48%;
+}
+
+.pie-wrapper h3 {
+    margin-bottom: 12px;
+}
+
+/* Make pie inputs narrower and aligned nicely */
+.pie-inputs label input[type="number"] {
+    width: 60px;
+    height: 40px;
 }
 
 /* Control rows wrap nicely */
 .control-row {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    /* slightly bigger spacing */
 }
 
+/* Section divider */
 .section-divider {
     height: 1px;
-    background: linear-gradient(to right, transparent, rgba(138, 138, 138, 0.479), transparent);
-    margin: 22px 0;
+    background: linear-gradient(to right, transparent, rgba(138, 138, 138, 0.48), transparent);
+    margin: 20px 0;
     width: 100%;
 }
 
+/* Pie inputs */
 .pie-inputs {
     display: flex;
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
+    margin-top: 8px;
 }
 
 .pie-inputs label {
     font-size: 0.9rem;
 }
 
-/* Make number + color inputs compact */
+/* Inputs */
 .controls input[type="number"],
 .controls input[type="color"] {
-    width: 80px;
+    margin-bottom: 0;
+    height: 36px;
+    width: 45px;
     padding: 4px 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    width: 60px;
 }
 
-/* Optional: make color pickers even tighter */
+/* Color pickers alignment */
 .controls input[type="color"] {
-    width: 50px;
-    padding: 2px;
+    width: 45px;
+    height: 36px;
+    padding: 0;
+    vertical-align: middle;
 }
 
-/* Prevent labels from stretching full width */
+/* Ensure labels align with inputs */
 .controls label {
     display: flex;
     align-items: center;
     gap: 6px;
-    width: auto;
 }
 
-/* Buttons: compact and consistent */
+/* Buttons */
 button {
     padding: 4px 10px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 /* Canvas styling */
 canvas {
     border-radius: 12px;
     flex-shrink: 0;
-    /* prevent shrinking */
+}
+
+/* Wallpaper Editor */
+#wallpaperEditor {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+#wallpaperEditor h3 {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 12px;
+    /* more spacing below h3 */
+    font-size: 1rem;
+}
+
+.wp-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.wp-controls label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.wp-controls input[type="range"] {
+    width: 100px;
+    height: 20px;
+}
+
+.wp-controls input[type="color"] {
+    width: 45px;
+    height: 36px;
+    padding: 2px;
+    margin-bottom: 0;
+}
+
+/* Wallpaper canvas */
+#wallpaperCanvas {
+    width: 100%;
+    height: auto;
+    max-width: 840px;
+    border-radius: 8px;
+}
+
+/* Center download button */
+#wallpaperEditor button {
+    align-self: center;
 }
 
 /* Minecraft font */
@@ -131,6 +217,7 @@ canvas {
     src: url('fonts/Minecraftia-Regular.ttf') format('truetype');
 }
 
+/* Responsive adjustments */
 @media (max-width: 1000px) {
     .app-wrapper {
         flex-direction: column;
@@ -144,5 +231,10 @@ canvas {
 
     .canvas-wrapper {
         width: 100%;
+    }
+
+    #mainCanvas,
+    #wallpaperCanvas {
+        max-width: 100%;
     }
 }
