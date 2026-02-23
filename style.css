@@ -1,56 +1,75 @@
-/* Base body and font */
+/* ---------- Base Styles ---------- */
+html,
 body {
+    height: 100%;
     margin: 0;
+    padding: 0;
     background: #1e1e1e;
-    font-family: 'Segoe UI', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    padding: 20px;
+    font-family: sans-serif;
 }
 
-/* Layout wrapper */
+body {
+    display: block;
+}
+
+/* ---------- App Wrapper ---------- */
 .app-wrapper {
     display: flex;
-    gap: 20px;
-    padding: 20px;
-    align-items: flex-start;
-    justify-content: center;
     flex-wrap: wrap;
+    /* allows stacking on small screens */
+    gap: 16px;
+    padding: 16px;
+    justify-content: center;
+    align-items: flex-start;
+    max-height: none;
+    /* prevent clipping at top */
 }
 
-/* Left controls */
-.controls {
+/* ---------- Left Controls Wrapper ---------- */
+.controls-wrapper {
     flex: 1 1 400px;
+    /* flexible width */
+    display: flex;
+    justify-content: center;
+    /* center the controls div inside */
+    align-items: flex-start;
+    min-width: 300px;
     max-width: 600px;
+}
+
+/* ---------- Controls ---------- */
+.controls {
+    width: 100%;
+    max-width: 500px;
+}
+
+/* ---------- Right Canvas Wrapper ---------- */
+.canvas-wrapper {
+    flex: 1 1 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
 }
 
 /* Canvas section heading spacing */
 .canvas-wrapper h3 {
     margin-bottom: 16px;
+    color: #bbbbbb;
 }
 
-.canvas-wrapper {
-    flex: 1 1 700px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 700px;
-    max-width: 90vw;
-}
-
-/* Main canvas slightly smaller for display */
-#mainCanvas {
-    width: 80%;
-    /* scale down to 80% of wrapper */
+/* ---------- Canvas ---------- */
+#mainCanvas,
+#wallpaperCanvas {
+    width: 100%;
     height: auto;
-    max-width: 600px;
-    /* keeps it smaller */
+    max-width: 840px;
     border-radius: 8px;
+    flex-shrink: 0;
 }
 
-/* Buttons under canvas */
+/* ---------- Buttons ---------- */
 .canvas-buttons {
     display: flex;
     gap: 10px;
@@ -59,11 +78,16 @@ body {
     flex-wrap: wrap;
 }
 
-/* Make pie rows flex horizontally with two items each */
+button {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+}
+
+/* ---------- Pie Rows ---------- */
 .pie-row {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
+    gap: 14px;
     flex-wrap: nowrap;
     margin-bottom: 20px;
 }
@@ -76,82 +100,110 @@ body {
     margin-bottom: 12px;
 }
 
-/* Make pie inputs narrower and aligned nicely */
-.pie-inputs label input[type="number"] {
+/* Pie inputs */
+.pie-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.pie-inputs label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    width: 140px;
+}
+
+.pie-inputs input[type="number"] {
     width: 60px;
     height: 40px;
 }
 
-/* Control rows wrap nicely */
+/* ---------- Control Rows ---------- */
 .control-row {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
     margin-bottom: 12px;
-    /* slightly bigger spacing */
 }
 
-/* Section divider */
+.control-row label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 240px;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+.control-row input[type="number"],
+.control-row input[type="color"] {
+    width: 60px;
+    height: 36px;
+    padding: 4px 6px;
+    box-sizing: border-box;
+}
+
+/* ---------- Section Divider ---------- */
 .section-divider {
     height: 1px;
     background: linear-gradient(to right, transparent, rgba(138, 138, 138, 0.48), transparent);
-    margin: 20px 0;
+    margin: 14px 0;
     width: 100%;
 }
 
-/* Pie inputs */
-.pie-inputs {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-top: 8px;
-}
-
-.pie-inputs label {
-    font-size: 0.9rem;
-}
-
-/* Inputs */
+/* ---------- Inputs inside Controls ---------- */
 .controls input[type="number"],
 .controls input[type="color"] {
     margin-bottom: 0;
     height: 36px;
-    width: 45px;
+    width: 60px;
     padding: 4px 6px;
     font-size: 1rem;
     box-sizing: border-box;
-    width: 60px;
 }
 
-/* Color pickers alignment */
 .controls input[type="color"] {
-    width: 45px;
-    height: 36px;
     padding: 0;
     vertical-align: middle;
 }
 
-/* Ensure labels align with inputs */
 .controls label {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-/* Buttons */
-button {
-    padding: 4px 10px;
-    font-size: 0.85rem;
+.controls label,
+.controls h3 {
+    color: #bbbbbb;
 }
 
-/* Canvas styling */
-canvas {
-    border-radius: 12px;
-    flex-shrink: 0;
+/* ---------- Background Settings ---------- */
+#backgroundSettings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
-/* Wallpaper Editor */
+#backgroundSettings label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#backgroundSettings label:nth-child(n+2) input {
+    margin-left: 20px;
+}
+
+/* Extra spacing for color toggle checkboxes */
+.showColorToggles {
+    margin-top: 20px;
+}
+
+/* ---------- Wallpaper Editor ---------- */
 #wallpaperEditor {
     width: 100%;
     max-width: 700px;
@@ -166,7 +218,6 @@ canvas {
     text-align: center;
     width: 100%;
     margin-bottom: 12px;
-    /* more spacing below h3 */
     font-size: 1rem;
 }
 
@@ -198,39 +249,29 @@ canvas {
     margin-bottom: 0;
 }
 
-/* Wallpaper canvas */
-#wallpaperCanvas {
-    width: 100%;
-    height: auto;
-    max-width: 840px;
-    border-radius: 8px;
-}
-
 /* Center download button */
 #wallpaperEditor button {
     align-self: center;
 }
 
-/* Minecraft font */
+/* ---------- Minecraft Font ---------- */
 @font-face {
     font-family: 'Minecraft';
     src: url('fonts/Minecraftia-Regular.ttf') format('truetype');
 }
 
-/* Responsive adjustments */
+/* ---------- Responsive ---------- */
 @media (max-width: 1000px) {
     .app-wrapper {
         flex-direction: column;
         align-items: center;
+        padding: 16px;
     }
 
-    .controls {
-        width: 100%;
-        max-width: 700px;
-    }
-
+    .controls-wrapper,
     .canvas-wrapper {
-        width: 100%;
+        flex: 1 1 100%;
+        max-width: 90vw;
     }
 
     #mainCanvas,

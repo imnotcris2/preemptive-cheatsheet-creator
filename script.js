@@ -75,12 +75,25 @@ function drawPie(ctxEl, x, y, radius, outlineColor, outlineWidth, index) {
   const showPink = document.getElementById("showPink").checked;
   const showGreen = document.getElementById("showGreen").checked;
 
-  let orange = Number(document.getElementById(`orange_${index}`).value);
-  let green = Number(document.getElementById(`green_${index}`).value);
-  orange = Math.max(0, Math.min(100, orange));
-  green = Math.max(0, Math.min(100, green));
+  let orangeInput = document.getElementById(`orange_${index}`);
+  let greenInput = document.getElementById(`green_${index}`);
+
+  let orange = Math.max(0, Math.min(100, Number(orangeInput.value)));
+  let green = Math.max(0, Math.min(100, Number(greenInput.value)));
+
+  // Clamp total to 100
+  if (orange + green > 100) {
+    // Reduce the one that was edited last
+    if (document.activeElement === orangeInput) {
+      green = 100 - orange;
+      greenInput.value = green;
+    } else {
+      orange = 100 - green;
+      orangeInput.value = orange;
+    }
+  }
+
   let pink = 100 - (orange + green);
-  if (pink < 0) pink = 0;
 
   const slices = [
     { value: orange, color: "#e76f51" },
