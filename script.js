@@ -42,6 +42,83 @@ function clampTextSizeInput() {
   }
 }
 
+function setupCustomNumberSteppers() {
+  const numberInputs = document.querySelectorAll('input[type="number"]');
+
+  numberInputs.forEach(inputEl => {
+    if (inputEl.parentElement && inputEl.parentElement.classList.contains("num-wrap")) return;
+
+    const wrap = document.createElement("span");
+    wrap.className = "num-wrap";
+    inputEl.parentNode.insertBefore(wrap, inputEl);
+    wrap.appendChild(inputEl);
+
+    const createStep = (label, direction) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "num-step";
+      btn.textContent = label;
+
+      let holdTimeout = null;
+      let holdInterval = null;
+
+      const runStep = () => {
+        try {
+          if (direction > 0) {
+            inputEl.stepUp(1);
+          } else {
+            inputEl.stepDown(1);
+          }
+        } catch {
+          const step = toNumber(inputEl.step, 1);
+          const min = inputEl.min === "" ? -Infinity : toNumber(inputEl.min);
+          const max = inputEl.max === "" ? Infinity : toNumber(inputEl.max);
+          const decimals = String(step).includes(".") ? String(step).split(".")[1].length : 0;
+          const current = toNumber(inputEl.value, min === -Infinity ? 0 : min);
+          const next = clamp(current + direction * step, min, max);
+          inputEl.value = decimals > 0 ? next.toFixed(decimals) : String(Math.round(next));
+        }
+        inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+        inputEl.dispatchEvent(new Event("change", { bubbles: true }));
+      };
+
+      const stopHold = () => {
+        if (holdTimeout) {
+          clearTimeout(holdTimeout);
+          holdTimeout = null;
+        }
+        if (holdInterval) {
+          clearInterval(holdInterval);
+          holdInterval = null;
+        }
+      };
+
+      const startHold = () => {
+        runStep();
+        holdTimeout = setTimeout(() => {
+          holdInterval = setInterval(runStep, 55);
+        }, 260);
+      };
+
+      btn.addEventListener("click", e => e.preventDefault());
+      btn.addEventListener("pointerdown", e => {
+        e.preventDefault();
+        btn.setPointerCapture(e.pointerId);
+        startHold();
+      });
+      btn.addEventListener("pointerup", stopHold);
+      btn.addEventListener("pointercancel", stopHold);
+      btn.addEventListener("pointerleave", stopHold);
+      btn.addEventListener("lostpointercapture", stopHold);
+
+      return btn;
+    };
+
+    wrap.appendChild(createStep("▲", 1));
+    wrap.appendChild(createStep("▼", -1));
+  });
+}
+
 function roundedRectPath(ctxEl, x, y, width, height, radius) {
   const safeRadius = Math.max(0, Math.min(radius, Math.min(width, height) / 2));
   ctxEl.beginPath();
@@ -480,4 +557,5 @@ function downloadWallpaper() {
   link.href = wallpaperCanvas.toDataURL();
   link.click();
 }
+setupCustomNumberSteppers();
 clampTextSizeInput();
