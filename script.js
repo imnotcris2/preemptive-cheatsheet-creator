@@ -24,18 +24,15 @@ function toggleBackgroundSettings() {
   bgSettings.style.display = showBgCheckbox.checked ? "flex" : "none";
   draw();
 }
-
 showBgCheckbox.addEventListener("change", toggleBackgroundSettings);
 toggleBackgroundSettings();
 
-// Main Draw Function
+// --- CHEAT SHEET DRAW FUNCTIONS ---
 function draw(customCanvas = null, customCtx = null) {
   const canvasEl = customCanvas || mainCanvas;
   const ctxEl = customCtx || ctx;
-
   ctxEl.clearRect(0, 0, canvasEl.width, canvasEl.height);
 
-  // Background
   if (showBgCheckbox.checked) {
     const bgColor = document.getElementById("bgColor").value;
     const outlineColor = document.getElementById("outlineColor").value;
@@ -51,7 +48,6 @@ function draw(customCanvas = null, customCtx = null) {
     }
   }
 
-  // Template
   ctxEl.drawImage(templateImage, 0, 0, canvasEl.width, canvasEl.height);
 
   const pieOutlineColor = document.getElementById("pieOutlineColor").value;
@@ -69,21 +65,18 @@ function draw(customCanvas = null, customCtx = null) {
   }
 }
 
-// Pie Drawing
 function drawPie(ctxEl, x, y, radius, outlineColor, outlineWidth, index) {
   const showOrange = document.getElementById("showOrange").checked;
   const showPink = document.getElementById("showPink").checked;
   const showGreen = document.getElementById("showGreen").checked;
 
-  let orangeInput = document.getElementById(`orange_${index}`);
-  let greenInput = document.getElementById(`green_${index}`);
+  const orangeInput = document.getElementById(`orange_${index}`);
+  const greenInput = document.getElementById(`green_${index}`);
 
   let orange = Math.max(0, Math.min(100, Number(orangeInput.value)));
   let green = Math.max(0, Math.min(100, Number(greenInput.value)));
 
-  // Clamp total to 100
   if (orange + green > 100) {
-    // Reduce the one that was edited last
     if (document.activeElement === orangeInput) {
       green = 100 - orange;
       greenInput.value = green;
@@ -93,7 +86,7 @@ function drawPie(ctxEl, x, y, radius, outlineColor, outlineWidth, index) {
     }
   }
 
-  let pink = 100 - (orange + green);
+  const pink = 100 - (orange + green);
 
   const slices = [
     { value: orange, color: "#e76f51" },
@@ -107,21 +100,17 @@ function drawPie(ctxEl, x, y, radius, outlineColor, outlineWidth, index) {
   pieSlices.forEach(slice => {
     if (slice.value <= 0) return;
     const sliceAngle = (slice.value / 100) * 2 * Math.PI;
-
     ctxEl.beginPath();
     ctxEl.moveTo(x, y);
     ctxEl.arc(x, y, radius, startAngle, startAngle + sliceAngle);
     ctxEl.closePath();
-
     ctxEl.fillStyle = slice.color;
     ctxEl.fill();
-
     if (outlineWidth > 0) {
       ctxEl.strokeStyle = outlineColor;
       ctxEl.lineWidth = outlineWidth;
       ctxEl.stroke();
     }
-
     startAngle += sliceAngle;
   });
 
@@ -140,7 +129,6 @@ function drawPie(ctxEl, x, y, radius, outlineColor, outlineWidth, index) {
   ]);
 }
 
-// Text on Pie
 function drawStackedText(ctxEl, x, y, radius, slices) {
   const textSize = Number(document.getElementById("textSize").value);
   const textOutlineWidth = Number(document.getElementById("textOutlineWidth").value);
@@ -155,75 +143,206 @@ function drawStackedText(ctxEl, x, y, radius, slices) {
     ctxEl.font = `bold ${textSize}px Minecraft`;
     ctxEl.textAlign = "center";
     ctxEl.textBaseline = "middle";
-
     if (textOutlineWidth > 0) {
       ctxEl.lineWidth = textOutlineWidth;
       ctxEl.strokeStyle = "#000000";
       ctxEl.strokeText(slice.value, x + radius * 0.45, startY);
     }
-
     ctxEl.fillStyle = slice.color;
     ctxEl.fillText(slice.value, x + radius * 0.45, startY);
-
     startY += textSize + 4;
   });
 }
 
-// Wallpaper Editor Toggle
-let isWallpaperVisible = false;
-toggleBtn.addEventListener("click", () => {
-  isWallpaperVisible = !isWallpaperVisible;
-  wallpaperEditor.style.display = isWallpaperVisible ? "flex" : "none";
-  toggleBtn.textContent = isWallpaperVisible ? "Remove Wallpaper" : "Add Wallpaper";
-  if (isWallpaperVisible) renderWallpaper();
-});
+// --- WALLPAPER EDITOR ---
+let offsetX = 200;
+let offsetY = 200;
+let scale = 1;
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
 
-// Render Wallpaper Canvas
-function renderWallpaper() {
-  const x = Number(document.getElementById("wpX").value);
-  const y = Number(document.getElementById("wpY").value);
-  const scale = Number(document.getElementById("wpScale").value);
-  const bgColor = document.getElementById("wpBgColor").value;
+const wpX = document.getElementById('wpX');
+const wpY = document.getElementById('wpY');
+const wpScale = document.getElementById('wpScale');
+const wpBgColor = document.getElementById('wpBgColor');
+const wpBgType = document.getElementById('wpBgType');
+const wpColorControls = document.getElementById('wpColorControls');
+const wpGradientControls = document.getElementById('wpGradientControls');
+const wpGradientColor1 = document.getElementById('wpGradientColor1');
+const wpGradientColor2 = document.getElementById('wpGradientColor2');
+const wpGradientRotation = document.getElementById('wpGradientRotation');
+const wpGradientOffset = document.getElementById('wpGradientOffset');
 
+// Draw wallpaper function
+function drawWallpaper() {
   wpCtx.clearRect(0, 0, wallpaperCanvas.width, wallpaperCanvas.height);
 
-  wpCtx.fillStyle = bgColor;
-  wpCtx.fillRect(0, 0, wallpaperCanvas.width, wallpaperCanvas.height);
+  if (wpBgType.value === 'color') {
+    wpCtx.fillStyle = wpBgColor.value;
+    wpCtx.fillRect(0, 0, wallpaperCanvas.width, wallpaperCanvas.height);
+  } else if (wpBgType.value === 'gradient') {
+    const angleRad = wpGradientRotation.value * Math.PI / 180;
+    const x2 = wallpaperCanvas.width * Math.cos(angleRad);
+    const y2 = wallpaperCanvas.height * Math.sin(angleRad);
 
+    const grad = wpCtx.createLinearGradient(0, 0, x2, y2);
+
+    // --- NEW: calculate offset & softness ---
+    const offset = parseFloat(wpGradientOffset.value);   // -1 to 1
+    const softness = parseFloat(wpFade.value);           // 0 to 1
+
+    // map offset to 0–1 range
+    const middle = 0.5 + offset / 2; // 0.5 is center
+
+    // apply softness to create two stops around middle
+    const stop1 = Math.max(0, middle - softness / 2);
+    const stop2 = Math.min(1, middle + softness / 2);
+
+    const color1 = wpGradientColor1.value;
+    const color2 = wpGradientColor2.value;
+
+    grad.addColorStop(0, color1);     // start
+    grad.addColorStop(stop1, color1); // hold first color until softened middle
+    grad.addColorStop(stop2, color2); // transition to second color
+    grad.addColorStop(1, color2);     // end
+
+    wpCtx.fillStyle = grad;
+    wpCtx.fillRect(0, 0, wallpaperCanvas.width, wallpaperCanvas.height);
+  }
+
+  // Draw cheat sheet
   wpCtx.save();
-  wpCtx.translate(x, y);
+  wpCtx.translate(offsetX, offsetY);
   wpCtx.scale(scale, scale);
   wpCtx.drawImage(mainCanvas, 0, 0);
   wpCtx.restore();
+
+  // Sync number inputs
+  wpX.value = Math.round(offsetX);
+  wpY.value = Math.round(offsetY);
+  wpScale.value = parseFloat(scale.toFixed(2));
 }
 
-// Download Functions
+// Initialize wallpaper editor
+wallpaperEditor.style.display = 'none';
+updateWallpaperBgControls();
+drawWallpaper();
+
+// --- Helpers ---
+function updateWallpaperBgControls() {
+  if (!wpBgType) return;
+  wpColorControls.style.display = wpBgType.value === 'color' ? 'flex' : 'none';
+  wpGradientControls.style.display = wpBgType.value === 'gradient' ? 'flex' : 'none';
+}
+
+// Resize dropdown
+function resizeWpBgType() {
+  const temp = document.createElement('span');
+  temp.style.visibility = 'hidden';
+  temp.style.whiteSpace = 'pre';
+  temp.style.font = window.getComputedStyle(wpBgType).font;
+  temp.textContent = wpBgType.options[wpBgType.selectedIndex].text;
+  document.body.appendChild(temp);
+  wpBgType.style.width = (temp.getBoundingClientRect().width + 30) + 'px';
+  document.body.removeChild(temp);
+}
+resizeWpBgType();
+wpBgType.addEventListener('change', () => {
+  updateWallpaperBgControls();
+  resizeWpBgType();
+  drawWallpaper();
+});
+
+// Toggle wallpaper editor
+let isWallpaperVisible = false;
+toggleBtn.addEventListener('click', () => {
+  isWallpaperVisible = !isWallpaperVisible;
+  wallpaperEditor.style.display = isWallpaperVisible ? 'flex' : 'none';
+  toggleBtn.textContent = isWallpaperVisible ? 'Remove Wallpaper' : 'Add Wallpaper';
+  if (isWallpaperVisible) drawWallpaper();
+});
+
+// Wallpaper dragging & zoom
+function getMousePos(e) {
+  const rect = wallpaperCanvas.getBoundingClientRect();
+  return {
+    x: (e.clientX - rect.left) * (wallpaperCanvas.width / rect.width),
+    y: (e.clientY - rect.top) * (wallpaperCanvas.height / rect.height)
+  };
+}
+
+wallpaperCanvas.addEventListener('mousedown', e => {
+  isDragging = true;
+  const pos = getMousePos(e);
+  dragStartX = pos.x - offsetX;
+  dragStartY = pos.y - offsetY;
+});
+wallpaperCanvas.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  const pos = getMousePos(e);
+  offsetX = pos.x - dragStartX;
+  offsetY = pos.y - dragStartY;
+  drawWallpaper();
+});
+wallpaperCanvas.addEventListener('mouseup', () => isDragging = false);
+wallpaperCanvas.addEventListener('mouseleave', () => isDragging = false);
+wallpaperCanvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  scale += e.deltaY * -0.001;
+  scale = Math.min(Math.max(0.1, scale), 5);
+  drawWallpaper();
+});
+
+// Number input events
+[wpX, wpY, wpScale].forEach(el => {
+  if (!el) return;
+  el.addEventListener('input', () => {
+    offsetX = parseFloat(wpX.value);
+    offsetY = parseFloat(wpY.value);
+    scale = parseFloat(wpScale.value);
+    drawWallpaper();
+  });
+});
+
+// Input events to redraw main canvas & wallpaper
+[
+  "bgColor", "outlineColor", "outlineWidth",
+  "pieOutlineColor", "pieOutlineWidth",
+  "textSize", "textOutlineWidth"
+].forEach(id => document.getElementById(id).addEventListener("input", () => { draw(); drawWallpaper(); }));
+
+["showOrange", "showPink", "showGreen", "showBackground"].forEach(id =>
+  document.getElementById(id).addEventListener("change", () => { draw(); drawWallpaper(); })
+);
+
+for (let i = 0; i < 4; i++) {
+  document.getElementById(`orange_${i}`).addEventListener("input", () => { draw(); drawWallpaper(); });
+  document.getElementById(`green_${i}`).addEventListener("input", () => { draw(); drawWallpaper(); });
+}
+
+[
+  wpBgColor,
+  wpGradientColor1,
+  wpGradientColor2,
+  wpGradientRotation,
+  wpGradientOffset,
+  wpFade
+].forEach(el => {
+  if (!el) return;
+  el.addEventListener('input', drawWallpaper);
+});
+
+// Download functions
 function download() {
   const link = document.createElement("a");
   link.download = "cheatsheet.png";
   link.href = mainCanvas.toDataURL();
   link.click();
 }
-
 function downloadWallpaper() {
   const link = document.createElement("a");
   link.download = "wallpaper.png";
   link.href = wallpaperCanvas.toDataURL();
   link.click();
 }
-
-// Real-time Updates
-["bgColor", "outlineColor", "outlineWidth", "pieOutlineColor", "pieOutlineWidth", "textSize", "textOutlineWidth"]
-  .forEach(id => document.getElementById(id).addEventListener("input", () => { draw(); renderWallpaper(); }));
-
-["showOrange", "showPink", "showGreen", "showBackground"]
-  .forEach(id => document.getElementById(id).addEventListener("change", () => { draw(); renderWallpaper(); }));
-
-for (let i = 0; i < 4; i++) {
-  document.getElementById(`orange_${i}`).addEventListener("input", () => { draw(); renderWallpaper(); });
-  document.getElementById(`green_${i}`).addEventListener("input", () => { draw(); renderWallpaper(); });
-}
-
-["wpX", "wpY", "wpScale", "wpBgColor"].forEach(id =>
-  document.getElementById(id).addEventListener("input", renderWallpaper)
-);

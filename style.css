@@ -1,4 +1,3 @@
-/* ---------- Base Styles ---------- */
 html,
 body {
     height: 100%;
@@ -12,78 +11,36 @@ body {
     display: block;
 }
 
-/* ---------- App Wrapper ---------- */
 .app-wrapper {
     display: flex;
     flex-wrap: wrap;
-    /* allows stacking on small screens */
     gap: 16px;
     padding: 16px;
     justify-content: center;
     align-items: flex-start;
     max-height: none;
-    /* prevent clipping at top */
 }
 
-/* ---------- Left Controls Wrapper ---------- */
+.app-wrapper label,
+.app-wrapper h3 {
+    color: #bbbbbb;
+    font-family: sans-serif;
+}
+
 .controls-wrapper {
     flex: 1 1 400px;
-    /* flexible width */
     display: flex;
     justify-content: center;
-    /* center the controls div inside */
     align-items: flex-start;
     min-width: 300px;
     max-width: 600px;
 }
 
-/* ---------- Controls ---------- */
 .controls {
     width: 100%;
     max-width: 500px;
 }
 
-/* ---------- Right Canvas Wrapper ---------- */
-.canvas-wrapper {
-    flex: 1 1 600px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 700px;
-}
-
-/* Canvas section heading spacing */
-.canvas-wrapper h3 {
-    margin-bottom: 16px;
-    color: #bbbbbb;
-}
-
-/* ---------- Canvas ---------- */
-#mainCanvas,
-#wallpaperCanvas {
-    width: 100%;
-    height: auto;
-    max-width: 840px;
-    border-radius: 8px;
-    flex-shrink: 0;
-}
-
-/* ---------- Buttons ---------- */
-.canvas-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-button {
-    padding: 4px 10px;
-    font-size: 0.85rem;
-}
-
-/* ---------- Pie Rows ---------- */
 .pie-row {
     display: flex;
     justify-content: space-between;
@@ -100,7 +57,6 @@ button {
     margin-bottom: 12px;
 }
 
-/* Pie inputs */
 .pie-inputs {
     display: flex;
     flex-direction: column;
@@ -119,9 +75,9 @@ button {
 .pie-inputs input[type="number"] {
     width: 60px;
     height: 40px;
+    margin-bottom: 0;
 }
 
-/* ---------- Control Rows ---------- */
 .control-row {
     display: flex;
     gap: 12px;
@@ -144,9 +100,9 @@ button {
     height: 36px;
     padding: 4px 6px;
     box-sizing: border-box;
+    margin-bottom: 0;
 }
 
-/* ---------- Section Divider ---------- */
 .section-divider {
     height: 1px;
     background: linear-gradient(to right, transparent, rgba(138, 138, 138, 0.48), transparent);
@@ -154,7 +110,6 @@ button {
     width: 100%;
 }
 
-/* ---------- Inputs inside Controls ---------- */
 .controls input[type="number"],
 .controls input[type="color"] {
     margin-bottom: 0;
@@ -176,12 +131,10 @@ button {
     gap: 6px;
 }
 
-.controls label,
 .controls h3 {
     color: #bbbbbb;
 }
 
-/* ---------- Background Settings ---------- */
 #backgroundSettings {
     display: flex;
     flex-wrap: wrap;
@@ -198,30 +151,67 @@ button {
     margin-left: 20px;
 }
 
-/* Extra spacing for color toggle checkboxes */
 .showColorToggles {
     margin-top: 20px;
 }
 
-/* ---------- Wallpaper Editor ---------- */
-#wallpaperEditor {
-    width: 100%;
-    max-width: 700px;
+.canvas-wrapper {
+    flex: 1 1 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    max-width: 700px;
+}
+
+.canvas-wrapper h3 {
+    margin-bottom: 16px;
+    color: #bbbbbb;
+}
+
+#mainCanvas,
+#wallpaperCanvas {
+    width: 100%;
+    height: auto;
+    max-width: 840px;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.canvas-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+}
+
+#wallpaperEditor {
+    display: none;
+    width: 100%;
+    max-width: 700px;
+    flex-direction: column;
+    align-items: center;
     gap: 12px;
-    margin-top: 20px;
+    margin-top: 50px;
 }
 
 #wallpaperEditor h3 {
     text-align: center;
     width: 100%;
+    font-size: 1.25rem;
+    color: #bbbbbb;
     margin-bottom: 12px;
-    font-size: 1rem;
 }
 
-.wp-controls {
+.wp-controls,
+#wpGradientControls,
+.wp-position-controls {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
@@ -229,38 +219,60 @@ button {
     align-items: center;
 }
 
-.wp-controls label {
+.wp-controls label,
+#wpGradientControls label,
+.wp-position-controls label {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.85rem;
-    white-space: nowrap;
-}
-
-.wp-controls input[type="range"] {
-    width: 100px;
-    height: 20px;
-}
-
-.wp-controls input[type="color"] {
-    width: 45px;
-    height: 36px;
-    padding: 2px;
+    font-size: 0.9rem;
+    justify-content: space-between;
+    color: #bbbbbb;
     margin-bottom: 0;
 }
 
-/* Center download button */
+.wp-controls input[type="number"],
+.wp-controls input[type="color"],
+#wpGradientControls input[type="number"],
+#wpGradientControls input[type="color"],
+.wp-position-controls input[type="number"] {
+    width: 80px;
+    height: 36px;
+    padding: 4px 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin-bottom: 0;
+}
+
+.wp-controls input[type="color"],
+#wpGradientControls input[type="color"] {
+    padding: 0;
+    vertical-align: middle;
+}
+
+#wpBgType {
+    width: auto;
+    min-width: 100px;
+    max-width: 200px;
+    height: 36px;
+    padding: 4px 6px;
+    box-sizing: border-box;
+    margin-bottom: 0;
+    padding-right: 20px;
+    min-width: 60px;
+    max-width: 400px;
+    box-sizing: content-box;
+}
+
 #wallpaperEditor button {
     align-self: center;
 }
 
-/* ---------- Minecraft Font ---------- */
 @font-face {
     font-family: 'Minecraft';
     src: url('fonts/Minecraftia-Regular.ttf') format('truetype');
 }
 
-/* ---------- Responsive ---------- */
 @media (max-width: 1000px) {
     .app-wrapper {
         flex-direction: column;
