@@ -1,16 +1,16 @@
 :root {
-  --bg1: #081227;
-  --bg2: #0d1f42;
-  --panel: rgba(11, 24, 52, 0.82);
-  --panel-border: rgba(113, 150, 216, 0.3);
-  --text: #eef5ff;
-  --muted: #c6d6f2;
-  --field-glow: rgba(120, 235, 255, 0.24);
-  --field-border-hover: #72d9ff;
-  --cherry-1: #ff5f7e;
-  --cherry-2: #d63256;
-  --cherry-3: #a91e3e;
-  --cherry-4: #7f132d;
+  --bg1: #17191d;
+  --bg2: #262a31;
+  --panel: rgba(32, 35, 41, 0.84);
+  --panel-border: rgba(174, 183, 196, 0.28);
+  --text: #f3f5f8;
+  --muted: #c9ced7;
+  --field-glow: rgba(214, 221, 230, 0.2);
+  --field-border-hover: #c6cfdb;
+  --cherry-1: #63e6be;
+  --cherry-2: #12b886;
+  --cherry-3: #9775fa;
+  --cherry-4: #7048e8;
 }
 
 @font-face {
@@ -33,7 +33,7 @@ body {
   font-family: "Segoe UI", Tahoma, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(1000px 500px at 10% -20%, rgba(70, 130, 255, 0.22), transparent 60%),
+    radial-gradient(1000px 500px at 10% -20%, rgba(220, 227, 238, 0.14), transparent 60%),
     linear-gradient(160deg, var(--bg1), var(--bg2));
 }
 
@@ -44,6 +44,11 @@ body {
   display: grid;
   grid-template-columns: minmax(360px, 680px) minmax(560px, 1fr);
   gap: 16px;
+}
+
+.app.is-visual-only {
+  pointer-events: none;
+  user-select: none;
 }
 
 .panel {
@@ -72,16 +77,16 @@ h2,
 }
 
 .card {
-  border: 1px solid rgba(113, 150, 216, 0.28);
+  border: 1px solid rgba(174, 183, 196, 0.26);
   border-radius: 12px;
-  background: rgba(8, 20, 46, 0.55);
+  background: rgba(22, 25, 31, 0.58);
   padding: 10px;
 }
 
 .divider {
   height: 1px;
   margin: 12px 0;
-  background: linear-gradient(to right, transparent, rgba(113, 150, 216, 0.45), transparent);
+  background: linear-gradient(to right, transparent, rgba(174, 183, 196, 0.4), transparent);
 }
 
 .row,
@@ -99,7 +104,7 @@ h2,
 
 .row > label:first-child {
   padding-right: 12px;
-  border-right: 1px solid rgba(113, 150, 216, 0.4);
+  border-right: 1px solid rgba(174, 183, 196, 0.34);
 }
 
 .controls-panel .row > label:last-child {
@@ -116,14 +121,14 @@ h2,
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   padding: 8px 10px;
-  border: 1px solid rgba(113, 150, 216, 0.25);
+  border: 1px solid rgba(174, 183, 196, 0.22);
   border-radius: 10px;
-  background: rgba(7, 18, 41, 0.35);
+  background: rgba(20, 23, 29, 0.42);
 }
 
 .wp-row.three > label:not(:last-child) {
   padding-right: 10px;
-  border-right: 1px solid rgba(113, 150, 216, 0.35);
+  border-right: 1px solid rgba(174, 183, 196, 0.3);
 }
 
 .wp-grid {
@@ -138,9 +143,9 @@ h2,
   display: grid;
   gap: 8px;
   padding: 8px 10px;
-  border: 1px solid rgba(113, 150, 216, 0.25);
+  border: 1px solid rgba(174, 183, 196, 0.22);
   border-radius: 10px;
-  background: rgba(7, 18, 41, 0.35);
+  background: rgba(20, 23, 29, 0.42);
 }
 
 .wp-grid-top {
@@ -157,7 +162,7 @@ h2,
 }
 
 .wp-grid-top > label:first-child {
-  border-right: 1px solid rgba(113, 150, 216, 0.35);
+  border-right: 1px solid rgba(174, 183, 196, 0.3);
   padding-right: 12px;
 }
 
@@ -166,7 +171,7 @@ h2,
 }
 
 .wp-grid-bottom > label:not(:last-child) {
-  border-right: 1px solid rgba(113, 150, 216, 0.35);
+  border-right: 1px solid rgba(174, 183, 196, 0.3);
   padding-right: 12px;
 }
 
@@ -232,8 +237,8 @@ input[type="color"],
 select,
 input[type="file"] {
   height: 40px;
-  border: 1px solid rgba(113, 150, 216, 0.56);
-  background: rgba(20, 37, 74, 0.95);
+  border: 1px solid rgba(174, 183, 196, 0.5);
+  background: rgba(47, 52, 61, 0.96);
   color: var(--text);
   padding: 0 10px;
   transition: border-color 140ms ease, box-shadow 140ms ease, transform 120ms ease;
@@ -252,8 +257,8 @@ input[type="color"]:focus,
 select:focus,
 input[type="file"]:focus {
   outline: none;
-  border-color: #8ef1ff;
-  box-shadow: 0 0 0 3px rgba(142, 241, 255, 0.32), 0 8px 16px rgba(3, 11, 25, 0.35);
+  border-color: #e0e5ed;
+  box-shadow: 0 0 0 3px rgba(224, 229, 237, 0.3), 0 8px 16px rgba(8, 9, 12, 0.35);
 }
 
 input[type="number"] {
@@ -280,8 +285,8 @@ select {
   -moz-appearance: none;
   padding-right: 34px;
   background-image:
-    linear-gradient(45deg, transparent 50%, #d8e8ff 50%),
-    linear-gradient(135deg, #d8e8ff 50%, transparent 50%);
+    linear-gradient(45deg, transparent 50%, #e2e6ee 50%),
+    linear-gradient(135deg, #e2e6ee 50%, transparent 50%);
   background-position:
     calc(100% - 14px) 17px,
     calc(100% - 8px) 17px;
@@ -302,8 +307,8 @@ input[type="file"]::file-selector-button {
   padding: 0 10px;
   margin-right: 10px;
   font-weight: 600;
-  color: #f0f8ff;
-  background: linear-gradient(135deg, #2b8dff, #2bc8ff);
+  color: #fff4f7;
+  background: linear-gradient(135deg, #d52f53, #a11537);
   cursor: pointer;
 }
 
@@ -312,34 +317,34 @@ input[type="checkbox"] {
   height: 22px;
   appearance: none;
   -webkit-appearance: none;
-  border: 2px solid rgba(255, 168, 186, 0.66);
-  border-radius: 7px;
-  background: linear-gradient(165deg, #3e0d1a, #250812);
-  box-shadow: inset 0 1px 0 rgba(255, 228, 236, 0.18), 0 5px 10px rgba(36, 8, 15, 0.5);
+  border: 1px solid rgba(255, 171, 191, 0.48);
+  border-radius: 6px;
+  background: #252a32;
+  box-shadow: 0 4px 10px rgba(7, 8, 11, 0.35);
   position: relative;
   cursor: pointer;
-  transition: background 140ms ease, border-color 140ms ease, transform 100ms ease, box-shadow 140ms ease;
+  transition: background 140ms ease, border-color 140ms ease, transform 120ms ease, box-shadow 160ms ease;
 }
 
 input[type="checkbox"]:hover {
-  border-color: #ff98b0;
-  box-shadow: 0 0 0 3px rgba(255, 113, 146, 0.28);
+  border-color: rgba(255, 136, 166, 0.82);
+  box-shadow: 0 0 0 3px rgba(255, 116, 154, 0.2);
 }
 
 input[type="checkbox"]:checked {
-  border-color: #ffd0dc;
-  background: linear-gradient(145deg, var(--cherry-1), var(--cherry-2));
-  box-shadow: 0 0 0 3px rgba(255, 118, 151, 0.25), 0 6px 12px rgba(120, 16, 44, 0.42);
+  border-color: rgba(255, 186, 204, 0.9);
+  background: linear-gradient(135deg, #ff5f84, #c01842);
+  box-shadow: 0 0 0 3px rgba(255, 95, 132, 0.24), 0 8px 14px rgba(105, 14, 41, 0.38);
 }
 
 input[type="checkbox"]:checked::after {
   content: "";
   position: absolute;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
-  border: solid #fff3f5;
+  left: 7px;
+  top: 3px;
+  width: 4px;
+  height: 9px;
+  border: solid #fff6f8;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
@@ -362,26 +367,27 @@ input[type="checkbox"]:checked::after {
 }
 
 .btn {
-  border: 1px solid transparent;
+  border: 1px solid rgba(255, 173, 193, 0.4);
   height: 50px;
   padding: 0 24px;
   font-size: 1.05rem;
   font-weight: 800;
-  letter-spacing: 0.015em;
-  border-radius: 14px;
-  box-shadow: 0 10px 22px rgba(6, 12, 24, 0.36);
+  letter-spacing: 0.02em;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(8, 10, 14, 0.36);
   cursor: pointer;
-  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+  transition: transform 140ms ease, filter 140ms ease, box-shadow 180ms ease, border-color 140ms ease;
 }
 
 .btn:hover {
-  filter: brightness(1.08);
+  filter: brightness(1.07);
   transform: translateY(-2px);
-  box-shadow: 0 14px 26px rgba(4, 10, 22, 0.45);
+  box-shadow: 0 0 0 3px rgba(255, 110, 148, 0.18), 0 14px 26px rgba(4, 10, 22, 0.45);
 }
 
 .btn:active {
   transform: translateY(1px);
+  box-shadow: 0 6px 14px rgba(5, 10, 20, 0.42);
 }
 
 .buttons {
@@ -391,18 +397,18 @@ input[type="checkbox"]:checked::after {
 }
 
 .btn-primary {
-  background: linear-gradient(145deg, var(--cherry-1), var(--cherry-2));
-  color: #fff7fa;
-  border-color: rgba(255, 190, 204, 0.68);
-  box-shadow: 0 12px 24px rgba(166, 28, 66, 0.42), inset 0 1px 0 rgba(255, 223, 231, 0.28);
+  background: linear-gradient(135deg, #ff5f84, #cf1f48);
+  color: #fff5f8;
+  border-color: rgba(255, 176, 196, 0.72);
+  box-shadow: 0 12px 24px rgba(137, 23, 54, 0.45);
 }
 
 .btn-accent,
 #toggleWallpaperBtn {
-  background: linear-gradient(145deg, var(--cherry-3), var(--cherry-4));
+  background: linear-gradient(135deg, #e83b62, #9c1335);
   color: #ffeef3;
-  border-color: rgba(255, 168, 187, 0.62);
-  box-shadow: 0 12px 24px rgba(95, 14, 34, 0.45), inset 0 1px 0 rgba(255, 191, 207, 0.2);
+  border-color: rgba(255, 156, 180, 0.66);
+  box-shadow: 0 12px 24px rgba(90, 12, 36, 0.46);
 }
 
 .num-wrap {
@@ -423,10 +429,10 @@ input[type="checkbox"]:checked::after {
 .num-step {
   width: 22px;
   height: 18px;
-  border: 1px solid rgba(113, 150, 216, 0.65);
+  border: 1px solid rgba(174, 183, 196, 0.58);
   border-radius: 6px;
-  background: rgba(20, 37, 74, 0.95);
-  color: #e7f4ff;
+  background: rgba(47, 52, 61, 0.95);
+  color: #e8edf5;
   font-size: 10px;
   padding: 0;
   line-height: 1;
@@ -434,8 +440,8 @@ input[type="checkbox"]:checked::after {
 }
 
 .num-step:hover {
-  border-color: #5de8ff;
-  box-shadow: 0 0 0 2px rgba(93, 232, 255, 0.2);
+  border-color: #d5dde9;
+  box-shadow: 0 0 0 2px rgba(213, 221, 233, 0.22);
 }
 
 .wp-align-row {
@@ -444,7 +450,7 @@ input[type="checkbox"]:checked::after {
 
 .wp-align-row > label {
   padding-right: 10px;
-  border-right: 1px solid rgba(113, 150, 216, 0.35);
+  border-right: 1px solid rgba(174, 183, 196, 0.3);
 }
 
 .wp-spacer {
@@ -456,8 +462,8 @@ input[type="checkbox"]:checked::after {
   width: 100%;
   height: auto;
   border-radius: 12px;
-  border: 1px solid rgba(113, 150, 216, 0.35);
-  background: #0a1430;
+  border: 1px solid rgba(174, 183, 196, 0.3);
+  background: #1d2128;
 }
 
 #wallpaperCanvas {

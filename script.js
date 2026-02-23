@@ -4,6 +4,9 @@ const ctx = mainCanvas.getContext("2d");
 
 const wallpaperCanvas = document.getElementById("wallpaperCanvas");
 const wpCtx = wallpaperCanvas.getContext("2d");
+const appRoot = document.querySelector(".app");
+
+const VISUAL_ONLY_MODE = false;
 
 const wallpaperEditor = document.getElementById("wallpaperEditor");
 const toggleBtn = document.getElementById("toggleWallpaperBtn");
@@ -33,6 +36,24 @@ function toNumber(value, fallback = 0) {
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
+}
+
+function clampNumberInputToBounds(inputEl) {
+  if (!inputEl || inputEl.type !== "number" || inputEl.value === "") return;
+
+  const current = toNumber(inputEl.value, NaN);
+  if (!Number.isFinite(current)) return;
+
+  const min = inputEl.min === "" ? -Infinity : toNumber(inputEl.min, -Infinity);
+  const max = inputEl.max === "" ? Infinity : toNumber(inputEl.max, Infinity);
+  const clamped = clamp(current, min, max);
+
+  if (clamped === current) return;
+
+  const step = inputEl.step;
+  const hasFixedDecimals = step && step !== "any" && step.includes(".");
+  const decimals = hasFixedDecimals ? step.split(".")[1].length : null;
+  inputEl.value = decimals !== null ? clamped.toFixed(decimals) : String(clamped);
 }
 
 function clampTextSizeInput() {
@@ -557,5 +578,27 @@ function downloadWallpaper() {
   link.href = wallpaperCanvas.toDataURL();
   link.click();
 }
+
+document.addEventListener("input", e => {
+  const target = e.target;
+  if (target instanceof HTMLInputElement && target.type === "number") {
+    clampNumberInputToBounds(target);
+  }
+}, true);
+
+document.addEventListener("blur", e => {
+  const target = e.target;
+  if (target instanceof HTMLInputElement && target.type === "number") {
+    clampNumberInputToBounds(target);
+  }
+}, true);
+
+if (VISUAL_ONLY_MODE && appRoot) {
+  appRoot.classList.add("is-visual-only");
+  appRoot.setAttribute("aria-disabled", "true");
+  // `inert` disables focus and all user interactions in supported browsers.
+  appRoot.inert = true;
+}
+
 setupCustomNumberSteppers();
 clampTextSizeInput();
