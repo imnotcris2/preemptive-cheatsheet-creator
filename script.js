@@ -173,6 +173,10 @@ const wpGradientColor1 = document.getElementById('wpGradientColor1');
 const wpGradientColor2 = document.getElementById('wpGradientColor2');
 const wpGradientRotation = document.getElementById('wpGradientRotation');
 const wpGradientOffset = document.getElementById('wpGradientOffset');
+const wpFade = document.getElementById('wpFade');
+const wpImageControls = document.getElementById('wpImageControls');
+const wpBgImageInput = document.getElementById('wpBgImageInput');
+let wallpaperBgImage = null;
 
 // Draw wallpaper function
 function drawWallpaper() {
@@ -209,6 +213,21 @@ function drawWallpaper() {
 
     wpCtx.fillStyle = grad;
     wpCtx.fillRect(0, 0, wallpaperCanvas.width, wallpaperCanvas.height);
+  } else if (wpBgType.value === 'image') {
+    if (wallpaperBgImage && wallpaperBgImage.complete) {
+      const imgScale = Math.max(
+        wallpaperCanvas.width / wallpaperBgImage.width,
+        wallpaperCanvas.height / wallpaperBgImage.height
+      );
+      const drawWidth = wallpaperBgImage.width * imgScale;
+      const drawHeight = wallpaperBgImage.height * imgScale;
+      const drawX = (wallpaperCanvas.width - drawWidth) / 2;
+      const drawY = (wallpaperCanvas.height - drawHeight) / 2;
+      wpCtx.drawImage(wallpaperBgImage, drawX, drawY, drawWidth, drawHeight);
+    } else {
+      wpCtx.fillStyle = wpBgColor.value;
+      wpCtx.fillRect(0, 0, wallpaperCanvas.width, wallpaperCanvas.height);
+    }
   }
 
   // Draw cheat sheet
@@ -234,6 +253,7 @@ function updateWallpaperBgControls() {
   if (!wpBgType) return;
   wpColorControls.style.display = wpBgType.value === 'color' ? 'flex' : 'none';
   wpGradientControls.style.display = wpBgType.value === 'gradient' ? 'flex' : 'none';
+  wpImageControls.style.display = wpBgType.value === 'image' ? 'flex' : 'none';
 }
 
 // Resize dropdown
@@ -253,6 +273,28 @@ wpBgType.addEventListener('change', () => {
   resizeWpBgType();
   drawWallpaper();
 });
+
+if (wpBgImageInput) {
+  wpBgImageInput.addEventListener('change', e => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) {
+      wallpaperBgImage = null;
+      drawWallpaper();
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = loadEvent => {
+      const img = new Image();
+      img.onload = () => {
+        wallpaperBgImage = img;
+        drawWallpaper();
+      };
+      img.src = loadEvent.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 // Toggle wallpaper editor
 let isWallpaperVisible = false;
