@@ -70,6 +70,10 @@ h2,
   font-size: clamp(1.4rem, 2.1vw, 2.2rem);
 }
 
+#wallpaperEditor h3 {
+  margin: 34px 0 10px;
+}
+
 .pie-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -221,6 +225,17 @@ label {
   gap: 8px;
   color: var(--text);
   font-weight: 600;
+}
+
+#wallpaperEditor .wp-thin-toggle {
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 36px;
+  margin: 6px 2px;
+}
+
+#wallpaperEditor .wp-thin-toggle + #wallpaperCanvas {
+  margin-top: 8px;
 }
 
 input[type="number"],

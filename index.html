@@ -83,7 +83,7 @@
       </div>
 
       <div id="wallpaperEditor">
-        <h3>Wallpaper Editor (1920x1080)</h3>
+        <h3>Wallpaper Editor</h3>
 
         <div class="wp-row">
           <label>Background Type
@@ -126,6 +126,8 @@
           <label>Scale <input type="number" id="wpScale" value="1" step="0.01"></label>
         </div>
 
+        <label class="toggle-line wp-thin-toggle"><span>Thin Preview</span><input type="checkbox"
+            id="wpThinPreview"></label>
         <canvas id="wallpaperCanvas" width="1920" height="1080"></canvas>
         <div class="buttons"><button class="btn btn-primary" onclick="downloadWallpaper()">Download Wallpaper</button>
         </div>

@@ -347,12 +347,18 @@ const wpGradientOffset = document.getElementById('wpGradientOffset');
 const wpFade = document.getElementById('wpFade');
 const wpImageControls = document.getElementById('wpImageControls');
 const wpBgImageInput = document.getElementById('wpBgImageInput');
+const wpThinPreview = document.getElementById('wpThinPreview');
 let wallpaperBgImage = null;
+const thinPreviewImage = new Image();
+thinPreviewImage.src = "images/thin_screenshot.png";
+thinPreviewImage.onload = () => {
+  if (wpThinPreview && wpThinPreview.checked) drawWallpaper();
+};
 const MIN_SCALE = 0.1;
 const MAX_SCALE = 5;
 
 // Draw wallpaper function
-function drawWallpaper() {
+function drawWallpaper(includeThinPreview = true) {
   wpCtx.clearRect(0, 0, wallpaperCanvas.width, wallpaperCanvas.height);
 
   if (wpBgType.value === 'color') {
@@ -409,6 +415,28 @@ function drawWallpaper() {
   wpCtx.scale(scale, scale);
   wpCtx.drawImage(mainCanvas, 0, 0);
   wpCtx.restore();
+
+  if (
+    includeThinPreview &&
+    wpThinPreview &&
+    wpThinPreview.checked &&
+    thinPreviewImage.complete &&
+    thinPreviewImage.naturalWidth > 0 &&
+    thinPreviewImage.naturalHeight > 0
+  ) {
+    const maxWidth = wallpaperCanvas.width * 0.92;
+    const maxHeight = wallpaperCanvas.height * 0.92;
+    const overlayScale = Math.min(
+      1,
+      maxWidth / thinPreviewImage.naturalWidth,
+      maxHeight / thinPreviewImage.naturalHeight
+    );
+    const overlayWidth = thinPreviewImage.naturalWidth * overlayScale;
+    const overlayHeight = thinPreviewImage.naturalHeight * overlayScale;
+    const overlayX = (wallpaperCanvas.width - overlayWidth) / 2;
+    const overlayY = (wallpaperCanvas.height - overlayHeight) / 2;
+    wpCtx.drawImage(thinPreviewImage, overlayX, overlayY, overlayWidth, overlayHeight);
+  }
 
   // Sync number inputs
   wpX.value = Math.round(offsetX);
@@ -565,6 +593,10 @@ for (let i = 0; i < 4; i++) {
   el.addEventListener('input', drawWallpaper);
 });
 
+if (wpThinPreview) {
+  wpThinPreview.addEventListener('change', drawWallpaper);
+}
+
 // Download functions
 function download() {
   const link = document.createElement("a");
@@ -573,10 +605,17 @@ function download() {
   link.click();
 }
 function downloadWallpaper() {
+  const showThinPreview = Boolean(wpThinPreview && wpThinPreview.checked);
+  if (showThinPreview) {
+    drawWallpaper(false);
+  }
   const link = document.createElement("a");
   link.download = "wallpaper.png";
   link.href = wallpaperCanvas.toDataURL();
   link.click();
+  if (showThinPreview) {
+    drawWallpaper(true);
+  }
 }
 
 document.addEventListener("input", e => {
